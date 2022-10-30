@@ -4,15 +4,19 @@ BINGE is a simple pipeline to ingest raw trades from [Binance](https://www.binan
 
 Binge is a simplified version of internal tooling, which has been processing Binance trades, on and off, for several years. Binge is setup to subscribe to and ingest coins that are actively traded against USDT (BTCUSDT, ETHUSDT, etc..), however one can easily extend the coins ingested with minor tweaks to [binge.py](binge/binge.py). 
 
+![image](https://user-images.githubusercontent.com/21028558/198904944-5390e2b9-359d-441e-b865-f39129e2dbba.png)
+
 ## Setup
 
 ### Docker
 
-Bring up binge using docker compose:
+1. Bring up binge using docker compose:
 
-```bash
-docker compose up
-```
+   ```bash
+   docker compose up
+   ```
+
+1. Connect to Grafana: http://localhost:3001
 
 ### Manual Setup
 
