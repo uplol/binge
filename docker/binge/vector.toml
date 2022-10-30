@@ -1,0 +1,16 @@
+[sources.stdin]
+type = "stdin"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = [ "stdin" ]
+endpoint = "http://clickhouse-0.localhost:8123"
+auth.strategy = "basic"
+auth.user = "binge"
+auth.password = "Qi35yP1Km"
+database = "binge"
+table = "ingest"
+compression = "gzip"
+skip_unknown_fields = true
+batch.timeout_secs = 1
+request.concurrency = "adaptive"

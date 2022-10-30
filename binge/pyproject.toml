@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "binge"
+version = "0.1.0"
+description = "Proecess Binance real-time trades for ingest"
+authors = []
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+orjson = "^3.8.0"
+websockets = "^10.3"
+requests = "^2.28.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+ruff = "^0.0.149"
+
+[tool.ruff]
+ignore = ["E501"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

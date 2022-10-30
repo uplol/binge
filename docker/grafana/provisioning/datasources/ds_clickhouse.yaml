@@ -1,0 +1,16 @@
+apiVersion: 1
+
+datasources:
+  - name: "ClickHouse"
+    type: "grafana-clickhouse-datasource"
+    isDefault: true
+    jsonData:
+      defaultDatabase: binge
+      port: 9000
+      server: clickhouse-0.localhost
+      username: binge
+      tlsSkipVerify: false
+    secureJsonData:
+      password: Qi35yP1Km
+    editable: true
+    uid: binge-clickhouse

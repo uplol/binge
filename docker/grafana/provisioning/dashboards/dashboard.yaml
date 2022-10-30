@@ -1,0 +1,9 @@
+apiVersion: 1
+
+providers:
+  - name: "binge"
+    type: file
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards

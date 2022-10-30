@@ -1,0 +1,15 @@
+[sources.stdin]
+type = "stdin"
+
+[sinks.clickhouse]
+type = "clickhouse"
+inputs = [ "stdin" ]
+endpoint = "http://localhost:8123"
+auth.strategy = "basic"
+auth.user = "USERNAME"
+auth.password = "PASSWORD"
+database = "binge"
+table = "ingest"
+compression = "gzip"
+batch.timeout_secs = 1
+request.concurrency = "adaptive"

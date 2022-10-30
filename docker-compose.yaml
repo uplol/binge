@@ -1,0 +1,59 @@
+---
+version: "3"
+
+services:
+  binge:
+    build: .
+    container_name: binge
+    hostname: binge-0.localhost
+    volumes:
+      - ./vector/vector.toml:/etc/vector/vector.toml:ro
+    depends_on:
+      clickhouse:
+        condition: service_healthy
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:22.10
+    expose:
+      - "8123"
+      - "9000"
+      - "9009"
+    hostname: clickhouse-0.localhost
+    environment:
+      - CLICKHOUSE_DB=binge
+      - CLICKHOUSE_USER=binge
+      - CLICKHOUSE_PASSWORD=Qi35yP1Km
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: wget -nv -t1 --spider http://localhost:8123 || exit 1
+      start_period: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./sql/clickhouse.sql:/docker-entrypoint-initdb.d/clickhouse.sql:ro
+
+  grafana:
+    image: grafana/grafana-enterprise:9.2.2-ubuntu
+    environment:
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_INSTALL_PLUGINS=grafana-clickhouse-datasource
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_DASHBOARDS_MIN_REFRESH_INTERVAL=1s
+    hostname: grafana-0.localhost
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/:/var/lib/grafana/dashboards/:ro
+    ports:
+      - "3001:3000"
+    depends_on:
+      clickhouse:
+        condition: service_healthy

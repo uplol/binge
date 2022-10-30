@@ -1,0 +1,433 @@
+{
+    "__inputs": [
+        {
+            "name": "DS_CLICKHOUSE-GRAFANA",
+            "label": "ClickHouse-Grafana",
+            "description": "",
+            "type": "datasource",
+            "pluginId": "grafana-clickhouse-datasource",
+            "pluginName": "ClickHouse"
+        }
+    ],
+    "__elements": {},
+    "__requires": [
+        {
+            "type": "panel",
+            "id": "candlestick",
+            "name": "Candlestick",
+            "version": ""
+        },
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "9.2.0"
+        },
+        {
+            "type": "datasource",
+            "id": "grafana-clickhouse-datasource",
+            "name": "ClickHouse",
+            "version": "2.0.2"
+        },
+        {
+            "type": "panel",
+            "id": "table",
+            "name": "Table",
+            "version": ""
+        }
+    ],
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "target": {
+                    "limit": 100,
+                    "matchAny": false,
+                    "tags": [],
+                    "type": "dashboard"
+                },
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": ""
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "none"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 21,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 2,
+            "interval": "1s",
+            "options": {
+                "candleStyle": "candles",
+                "colorStrategy": "open-close",
+                "colors": {
+                    "down": "red",
+                    "up": "green"
+                },
+                "fields": {
+                    "close": "close",
+                    "high": "high",
+                    "low": "low",
+                    "open": "open",
+                    "volume": "volumeA"
+                },
+                "includeAllFields": false,
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": false
+                },
+                "mode": "candles+volume"
+            },
+            "pluginVersion": "9.2.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": ""
+                    },
+                    "format": 1,
+                    "meta": {
+                        "builderOptions": {
+                            "fields": [],
+                            "limit": 100,
+                            "mode": "list"
+                        }
+                    },
+                    "queryType": "sql",
+                    "rawSql": "select\r\n  timestamp as t,\r\n  open::Decimal128(8) as open,\r\n  high::Decimal128(8) as high,\r\n  low::Decimal128(8) as low,\r\n  close::Decimal128(8) as close,\r\n  volumeA::Decimal128(8) as volume\r\nfrom binge.trade_candles\r\nwhere\r\n  $__timeFilter(timestamp)\r\n  and symbol = '${CoinPair}'\r\norder by timestamp",
+                    "refId": "A"
+                }
+            ],
+            "title": "${CoinPair}",
+            "type": "candlestick"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": ""
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Time"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Volume"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Average Price"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 21
+            },
+            "id": 5,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "9.2.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": ""
+                    },
+                    "format": 0,
+                    "meta": {
+                        "builderOptions": {
+                            "fields": [],
+                            "limit": 100,
+                            "mode": "list"
+                        }
+                    },
+                    "queryType": "sql",
+                    "rawSql": "with\r\n  toStartOfSecond(tradeTime) as t\r\nselect\r\n  formatDateTime(t, '%T') as Time,\r\n  sum(quantity)::Decimal128(8) as Volume,\r\n  avg(price) as `Average Price`,\r\n  count() as Trades\r\nfrom binge.raw_trades\r\nwhere\r\n  $__timeFilter(tradeTime)\r\n  and symbol = '${CoinPair}'\r\ngroup by t\r\norder by t desc\r\nlimit 30",
+                    "refId": "A"
+                }
+            ],
+            "title": "Per Second Trades",
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "grafana-clickhouse-datasource",
+                "uid": ""
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "align": "auto",
+                        "displayMode": "auto",
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 80
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Time"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Volume"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.width"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 21
+            },
+            "id": 6,
+            "options": {
+                "footer": {
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": []
+            },
+            "pluginVersion": "9.2.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "grafana-clickhouse-datasource",
+                        "uid": ""
+                    },
+                    "format": 0,
+                    "meta": {
+                        "builderOptions": {
+                            "fields": [],
+                            "limit": 100,
+                            "mode": "list"
+                        }
+                    },
+                    "queryType": "sql",
+                    "rawSql": "select\r\n  subString(toString(tradeTime), 11, 13) as Time,\r\n  quantity::Decimal128(8) as Volume,\r\n  price as `Price`\r\nfrom binge.raw_trades\r\nwhere\r\n  $__timeFilter(tradeTime)\r\n  and symbol = '${CoinPair}'\r\norder by tradeTime desc\r\nlimit 50",
+                    "refId": "A"
+                }
+            ],
+            "title": "Trade Log",
+            "type": "table"
+        }
+    ],
+    "refresh": "1s",
+    "schemaVersion": 37,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "current": {},
+                "datasource": {
+                    "type": "grafana-clickhouse-datasource",
+                    "uid": ""
+                },
+                "definition": "select distinct symbol from binge.trade_candles_agg",
+                "hide": 0,
+                "includeAll": false,
+                "multi": false,
+                "name": "CoinPair",
+                "options": [],
+                "query": "select distinct symbol from binge.trade_candles_agg",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "type": "query"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-5m",
+        "to": "now"
+    },
+    "timepicker": {
+        "refresh_intervals": [
+            "1s",
+            "2s",
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ]
+    },
+    "timezone": "",
+    "title": "Basic Example",
+    "uid": "crPMyFH4k",
+    "version": 1,
+    "weekStart": ""
+}
