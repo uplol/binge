@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS binge.raw_trades
 )
 ENGINE = MergeTree
 PARTITION BY toYYYYMMDD(tradeTime)
-ORDER BY (tradeTime);
+ORDER BY (symbol, tradeTime);
 
 CREATE MATERIALIZED VIEW IF NOT EXISTS binge.ingest_mv TO binge.raw_trades AS
 SELECT
