@@ -46,3 +46,7 @@ Binge is a simplified version of internal tooling, which has been processing Bin
     ```
 
 1. Follow the official [Import a Dashboard](https://grafana.com/docs/grafana/latest/dashboards/manage-dashboards/#import-a-dashboard) steps to import the example dashboards located in the [grafana](grafana/) directory to your Grafana instance.
+
+   > **Note**
+   > 
+   > To enable sub 5 second refresh rates, you will need to modify your grafana.ini [min_refresh_interval](https://grafana.com/docs/grafana/v9.0/setup-grafana/configure-grafana/#min_refresh_interval) setting to allow faster refresh rates.
