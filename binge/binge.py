@@ -1,14 +1,13 @@
 import asyncio
-from typing import Any
 import websockets
 import orjson
 import requests
 
 # https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md
-BINANCE_WSS_URL = "wss://stream.binance.com:9443/ws"
+BINANCE_WSS_URL = "wss://data-stream.binance.com/ws"
 
 # https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#exchange-information
-BINANCE_EXCHANGE_INFO_URL = "https://api.binance.com/api/v3/exchangeInfo"
+BINANCE_EXCHANGE_INFO_URL = "https://data.binance.com/api/v3/exchangeInfo"
 
 
 async def main():
@@ -31,7 +30,7 @@ async def main():
         try:
             async for message in websocket:
                 await process(message)
-        except websockets.ConnectionClosed as e:
+        except websockets.ConnectionClosed:
             continue
 
 
@@ -55,7 +54,8 @@ async def get_usdt_trade_pairs() -> list[str]:
             and symbol["isSpotTradingAllowed"]
             and symbol["quoteAsset"] == "USDT"
         ):
-            symbols.append(f"{symbol['symbol'].lower()}@trade") # Note: `SYMBOL@trade` must be lowercase or the api will not return anything
+            # `SYMBOL@trade` must be lowercase or the api will not return anything
+            symbols.append(f"{symbol['symbol'].lower()}@trade")
 
     return symbols
 
